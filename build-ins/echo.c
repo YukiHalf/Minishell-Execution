@@ -1,24 +1,52 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdarius- <sdarius-@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/14 15:25:24 by sdarius-          #+#    #+#             */
-/*   Updated: 2025/10/15 19:17:54 by sdarius-         ###   ########.fr       */
+/*   Created: 2025/10/15 19:30:17 by sdarius-          #+#    #+#             */
+/*   Updated: 2025/10/15 20:04:18 by sdarius-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int b_cd(const char *path)
+bool	flag_n(char *flag)
 {
-	if((chdir(path)) == -1)
+	int	i;
+
+	i = 1;
+	if (flag[0] == '-')
 	{
-		perror("chdir");
-		return 1;
+		while (flag[i])
+		{
+			if (flag[i] != 'n')
+				return (0);
+			i++;
+		}
 	}
-		return 0;
+	else
+		return (0);
+	return (1);
 }
 
+void	b_echo(char **s_cmd)
+{
+	int	i;
+
+	i = 1;
+	if (flag_n(s_cmd[1]))
+		i = 2;
+	while (s_cmd[i])
+	{
+		printf("%s", s_cmd[i]);
+		if(s_cmd[i+1])
+		printf(" ");
+		i++;
+	}
+	if (!flag_n(s_cmd[1]))
+	{
+		printf("\n");
+	}
+}

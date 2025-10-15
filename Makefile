@@ -11,7 +11,8 @@ SRC_DIR = build-ins
 SRC = main-test.c \
 	  pwd.c \
 	  cd.c \
-	  exit.c
+	  exit.c \
+	  echo.c 
 LIBS := -L$(LIBFT_DIR) -lft -lreadline
 SRCS	:= $(addprefix $(SRC_DIR)/, $(SRC))
 

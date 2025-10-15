@@ -6,7 +6,7 @@
 /*   By: sdarius- <sdarius-@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 15:26:04 by sdarius-          #+#    #+#             */
-/*   Updated: 2025/10/14 19:34:27 by sdarius-         ###   ########.fr       */
+/*   Updated: 2025/10/15 19:44:36 by sdarius-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,9 @@ void	debug_buildin(char *cmd)
 	else if(strcmp(s_cmd[0],"cd") == 0)
 		b_cd(s_cmd[1]);
 	else if (strcmp(s_cmd[0],"exit") == 0)
-		b_exit();
+		b_exit(s_cmd);
+	else if(strcmp(s_cmd[0],"echo") == 0)
+		b_echo(s_cmd);
 	free(s_cmd);
 }
 
