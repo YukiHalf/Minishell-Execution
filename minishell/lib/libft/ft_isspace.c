@@ -1,36 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   ft_issspace.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdarius- <sdarius-@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/14 15:25:42 by sdarius-          #+#    #+#             */
-/*   Updated: 2025/10/14 19:12:32 by sdarius-         ###   ########.fr       */
+/*   Created: 2025/08/15 16:25:21 by sdarius-          #+#    #+#             */
+/*   Updated: 2025/08/18 19:07:39 by sdarius-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-char	*b_pwd(void)
+int	ft_isspace(int c)
 {
-	long	size;
-	char	*buf;
-
-	size = pathconf(".", _PC_PATH_MAX);
-	if (size == -1)
-		size = 4096;
-
-	if ((buf = malloc((size_t)size)) == NULL)
-	{
-		perror("malloc");
-		return (NULL);
-	}
-	if (getcwd(buf, (size_t)size) == NULL)
-	{
-		perror("getcwd");
-		free(buf);
-		return (NULL);
-	}
-	return (buf);
+	if ((c >= 9 && c <= 13) || c == 32)
+		return (1);
+	return (0);
 }

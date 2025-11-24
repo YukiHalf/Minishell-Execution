@@ -1,52 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   ft_lstiter_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdarius- <sdarius-@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/15 19:30:17 by sdarius-          #+#    #+#             */
-/*   Updated: 2025/10/15 20:04:18 by sdarius-         ###   ########.fr       */
+/*   Created: 2025/07/11 18:52:51 by sdarius-          #+#    #+#             */
+/*   Updated: 2025/07/12 16:02:06 by sdarius-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-bool	flag_n(char *flag)
+void	ft_lstiter(t_list *lst, void (*f)(void *))
 {
-	int	i;
+	t_list	*tmp;
 
-	i = 1;
-	if (flag[0] == '-')
+	tmp = lst;
+	while (tmp)
 	{
-		while (flag[i])
-		{
-			if (flag[i] != 'n')
-				return (0);
-			i++;
-		}
-	}
-	else
-		return (0);
-	return (1);
-}
-
-void	b_echo(char **s_cmd)
-{
-	int	i;
-
-	i = 1;
-	if (flag_n(s_cmd[1]))
-		i = 2;
-	while (s_cmd[i])
-	{
-		printf("%s", s_cmd[i]);
-		if(s_cmd[i+1])
-		printf(" ");
-		i++;
-	}
-	if (!flag_n(s_cmd[1]))
-	{
-		printf("\n");
+		f(tmp->content);
+		tmp = tmp->next;
 	}
 }

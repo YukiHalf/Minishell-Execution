@@ -1,47 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdarius- <sdarius-@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/14 19:31:14 by sdarius-          #+#    #+#             */
-/*   Updated: 2025/10/15 19:54:38 by sdarius-         ###   ########.fr       */
+/*   Created: 2025/07/10 14:29:35 by sdarius-          #+#    #+#             */
+/*   Updated: 2025/07/12 17:17:54 by sdarius-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-bool	is_num(char *arg)
+char	*ft_strjoin(const char *s1, const char *s2)
 {
-	int	i;
+	char	*str;
+	size_t	i;
 
+	if (!s1 || !s2)
+		return (NULL);
+	str = (char *)malloc((ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (!str)
+		return (NULL);
 	i = 0;
-	while (arg[i])
+	while (*s1)
 	{
-		if (!ft_isdigit(arg[i]))
-			return (0);
+		str[i] = *s1;
+		s1++;
 		i++;
 	}
-	return (1);
-}
-
-void	b_exit(char **s_cmd)
-{
-	int	exit_code;
-
-	exit_code = 0;
-	if (s_cmd[1] && is_num(s_cmd[1]))
+	while (*s2)
 	{
-		exit_code = atoi(s_cmd[1]);
-		exit(exit_code);
+		str[i] = *s2;
+		s2++;
+		i++;
 	}
-	else if(!s_cmd[1])
-	{
-		exit(exit_code);
-	}
-	else
-		perror("exit");
-	// free everything , make sure all the processes finish corect?
-	// maybe i need to use kill
+	str[i] = 0;
+	return (str);
 }
