@@ -1,12 +1,13 @@
 #include "execution.h"
 
-int	b_env(char **env)
+int	b_env(t_meta *meta)
 {
 	int	i;
 
-	while (env[i])
+	i = 0;
+	while (meta->env[i])
 	{
-		printf("%s\n", env[i]);
+		printf("%s\n", meta->env[i]);
 		i++;
 	}
 	return (0);

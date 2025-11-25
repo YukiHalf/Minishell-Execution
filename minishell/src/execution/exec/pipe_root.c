@@ -22,7 +22,7 @@ void	child_right(t_token *cmd, int *fd_main, char **env)
 	exit(1);
 }
 
-void	child_left(t_token *cmd, int *fd_main, char **env)
+void	child_left(t_token *cmd, int *fd_main, t_meta *meta)
 {
 	int	fd;
 
@@ -40,11 +40,11 @@ void	child_left(t_token *cmd, int *fd_main, char **env)
 	}
 	dup2(fd_main[1], STDOUT_FILENO);
 	close(fd_main[1]);
-	exec_cmd(cmd, env);
+	exec_cmd(cmd, meta->env);
 	exit(1);
 }
 
-int	pipe_root(t_token *exec, char **env)
+int	pipe_root(t_token *exec, t_meta *meta)
 {
 	int	fd_main[2];
 	int	status;
@@ -56,12 +56,12 @@ int	pipe_root(t_token *exec, char **env)
 	if (pid1 == -1)
 		return (perror("fork"), 1);
 	if (pid1 == 0)
-		child_left(exec->left, fd_main, env);
+		child_left(exec->left, fd_main, meta->env);
 	pid2 = fork();
 	if (pid2 == -1)
 		return (perror("fork"), 1);
 	if (pid2 == 0)
-		child_right(exec->right, fd_main, env);
+		child_right(exec->right, fd_main, meta->env);
 	close(fd_main[0]);
 	close(fd_main[1]);
 	waitpid(pid1, NULL, 0);

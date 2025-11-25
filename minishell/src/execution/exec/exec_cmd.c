@@ -56,20 +56,19 @@ int	exec_cmd(t_token *cmd, char **env)
 	path = get_path(cmd->s_cmd[0], env);
 	if (execve(path, cmd->s_cmd, env) == -1)
 	{
-		// free;
 		perror(cmd->s_cmd[0]);
 		exit(127);
 	}
 	return (1);
 }
 
-int	execute_simple_cmd(t_token *cmd, char **env)
+int	execute_simple_cmd(t_token *cmd, t_meta *meta)
 {
 	pid_t	pid;
 	int		status;
 	int		buildin_exit;
 
-	buildin_exit = check_build_in(cmd);
+	buildin_exit = check_build_in(cmd, meta);
 	if (buildin_exit >= 0)
 		return (buildin_exit);
 	pid = fork();
@@ -77,7 +76,7 @@ int	execute_simple_cmd(t_token *cmd, char **env)
 		return (perror("fork"), 1);
 	if (pid == 0)
 	{
-		exec_cmd(cmd, env);
+		exec_cmd(cmd, meta->env);
 		exit(1);
 	}
 	waitpid(pid, &status, 0);
