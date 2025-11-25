@@ -10,6 +10,6 @@ void	execute(t_token *node, t_meta *meta)
 	while (node->right)
 	{
 		execute(node->right, meta->env);
-		check_node(node, env);
+		check_node(node, meta);
 	}
 }

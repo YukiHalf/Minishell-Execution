@@ -97,7 +97,7 @@ void	debug_data_complex(t_meta *meta)
 }
 
 // Another complex example: cat file.txt | grep error | wc -l && echo done
-	//|| echo failed
+//|| echo failed
 void	debug_data_complex2(t_meta *meta)
 {
 	t_token	*cat_cmd;
@@ -236,10 +236,10 @@ void	debug_data(t_meta *meta)
 	grep_arg = malloc(sizeof(t_token));
 	// Echo command node
 	echo_cmd->type = T_TEXT;
-	echo_cmd->value = ft_strdup("cd");
+	echo_cmd->value = ft_strdup("env");
 	echo_cmd->s_cmd = malloc(sizeof(char *) * 3); // ✅ ADD THIS
-	echo_cmd->s_cmd[0] = ft_strdup("cd");         // ✅ ADD THIS
-	echo_cmd->s_cmd[1] = ft_strdup("checks");   // ✅ ADD THIS
+	echo_cmd->s_cmd[0] = ft_strdup("env");        // ✅ ADD THIS
+	echo_cmd->s_cmd[1] = NULL;                    // ✅ ADD THIS
 	echo_cmd->s_cmd[2] = NULL;                    // ✅ ADD THIS
 	echo_cmd->left = echo_arg;
 	echo_cmd->right = NULL;
@@ -247,7 +247,7 @@ void	debug_data(t_meta *meta)
 	echo_cmd->redirections = NULL; // ✅ ADD THIS
 	// Echo argument node ("hello world")
 	echo_arg->type = T_TEXT;
-	echo_arg->value = ft_strdup("checks");
+	echo_arg->value = ft_strdup("var=23");
 	echo_arg->s_cmd = NULL; // ✅ ADD THIS (args don't need s_cmd)
 	echo_arg->left = NULL;
 	echo_arg->right = NULL;
@@ -263,10 +263,10 @@ void	debug_data(t_meta *meta)
 	pipe_node->redirections = NULL; // ✅ ADD THIS
 	// Grep command node
 	grep_cmd->type = T_TEXT;
-	grep_cmd->value = ft_strdup("pwd");
+	grep_cmd->value = ft_strdup("env");
 	grep_cmd->s_cmd = malloc(sizeof(char *) * 3); // ✅ ADD THIS
-	grep_cmd->s_cmd[0] = ft_strdup("pwd");       // ✅ ADD THIS
-	grep_cmd->s_cmd[1] = NULL;          // ✅ ADD THIS
+	grep_cmd->s_cmd[0] = ft_strdup("env");        // ✅ ADD THIS
+	grep_cmd->s_cmd[1] = NULL;                    // ✅ ADD THIS
 	grep_cmd->s_cmd[2] = NULL;                    // ✅ ADD THIS
 	grep_cmd->left = NULL;
 	grep_cmd->right = NULL;
@@ -294,7 +294,7 @@ int	main(int argc, char **argv, char **env)
 	meta.last_exit_code = 0;
 	debug_data(&meta);
 	// execute(&meta.head,env);
-	meta.last_exit_code = check_node(meta.head, env);
+	meta.last_exit_code = check_node(meta.head, &meta);
 	printf("\n EXIT CODE: %d \n", meta.last_exit_code);
 	return (0);
 }

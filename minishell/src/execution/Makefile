@@ -20,7 +20,7 @@ EXEC_DIR	:= exec/
 UTILS_DIR  := utils/
 
 # Source files by directory
-BUILTIN_FILES := echo.c pwd.c cd.c exit.c
+BUILTIN_FILES := echo.c pwd.c cd.c exit.c env.c export.c unset.c helper_buildins.c
 CHECKS_FILES  := check_cmd.c
 EXEC_FILES    := exec_cmd.c and_root.c or_root.c pipe_root.c execution_main.c
 UTILS_FILES := helper_functions.c
