@@ -9,29 +9,14 @@ static int	update_env_var(t_meta *meta, char *var, int index)
 	return (0);
 }
 
-static int	add_env_var(t_meta *meta, char *new_var)
+static int	add_env_var(t_meta *meta, char *new_var, int index)
 {
 	int		count;
 	char	**new_env;
-	int		i;
 
 	count = count_env(meta->env);
-	new_env = malloc(sizeof(char *) * (count + 2));
-	while (!new_env)
-		return (1);
-	i = 0;
-	while (i < count)
-	{
-		new_env[i] = meta->env[i];
-		i++;
-	}
-	new_env[i] = ft_strdup(new_var);
-	if (!new_env[i])
-	{
-		free(new_env);
-		return (1);
-	}
-	new_env[i + 1] = NULL;
+	new_env = copy_env(meta->env, new_var, count, index);
+	new_env[index] = ft_strdup(new_var);
 	free(meta->env);
 	meta->env = new_env;
 	return (0);
@@ -39,12 +24,27 @@ static int	add_env_var(t_meta *meta, char *new_var)
 
 static void	print_export(char **env)
 {
-	int	i;
+	int		i;
+	int		j;
+	char	*name;
+	char	*value;
 
 	i = 0;
 	while (env[i])
 	{
-		printf("declare -x %s\n", env[i]);
+		j = 0;
+		while (env[i][j] && env[i][j] != '=')
+			j++;
+		if (env[i][j] == '=')
+		{
+			name = ft_substr(env[i], 0, j);
+			value = ft_strdup(env[i] + j + 1);
+			printf("declare -x %s=\"%s\"\n", name, value);
+			free(name);
+			free(value);
+		}
+		else
+			printf("declare -x %s\n", env[i]);
 		i++;
 	}
 }
@@ -59,7 +59,10 @@ static void	process_env(t_meta *meta, t_token *cmd, int i)
 		if (index >= 0)
 			update_env_var(meta, cmd->s_cmd[i], index);
 		else
-			add_env_var(meta, cmd->s_cmd[i]);
+		{
+			index = find_insert_index(meta->env, cmd->s_cmd[i]);
+			add_env_var(meta, cmd->s_cmd[i], index);
+		}
 	}
 }
 int	b_export(t_token *cmd, t_meta *meta)

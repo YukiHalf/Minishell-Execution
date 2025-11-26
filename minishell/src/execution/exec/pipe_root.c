@@ -1,6 +1,6 @@
 #include "../execution_inc/execution.h"
 
-void	child_right(t_token *cmd, int *fd_main, char **env)
+void	child_right(t_token *cmd, int *fd_main, t_meta *meta)
 {
 	int	fd;
 
@@ -18,8 +18,7 @@ void	child_right(t_token *cmd, int *fd_main, char **env)
 		dup2(fd, STDOUT_FILENO);
 		close(fd);
 	}
-	exec_cmd(cmd, env);
-	exit(1);
+	exec_cmd(cmd, meta);
 }
 
 void	child_left(t_token *cmd, int *fd_main, t_meta *meta)
@@ -40,8 +39,7 @@ void	child_left(t_token *cmd, int *fd_main, t_meta *meta)
 	}
 	dup2(fd_main[1], STDOUT_FILENO);
 	close(fd_main[1]);
-	exec_cmd(cmd, meta->env);
-	exit(1);
+	exec_cmd(cmd, meta);
 }
 
 int	pipe_root(t_token *exec, t_meta *meta)
@@ -56,12 +54,12 @@ int	pipe_root(t_token *exec, t_meta *meta)
 	if (pid1 == -1)
 		return (perror("fork"), 1);
 	if (pid1 == 0)
-		child_left(exec->left, fd_main, meta->env);
+		child_left(exec->left, fd_main, meta);
 	pid2 = fork();
 	if (pid2 == -1)
 		return (perror("fork"), 1);
 	if (pid2 == 0)
-		child_right(exec->right, fd_main, meta->env);
+		child_right(exec->right, fd_main, meta);
 	close(fd_main[0]);
 	close(fd_main[1]);
 	waitpid(pid1, NULL, 0);

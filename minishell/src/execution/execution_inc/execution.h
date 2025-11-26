@@ -14,12 +14,14 @@ int		b_export(t_token *cmd, t_meta *meta);
 int		is_valid_identifier(char *cmd);
 int		count_env(char **env);
 int		find_env_index(char **env, char *var);
+int 	find_insert_index(char **env,char *var);
+char	**copy_env(char **env, char *var, int count, int index);
 
 int		check_node(t_token *node, t_meta *meta);
 int		check_build_in(t_token *cmd, t_meta *meta);
 void	execute(t_token *node, t_meta *meta);
 
-int		exec_cmd(t_token *cmd, char **env);
+int		exec_cmd(t_token *cmd, t_meta *meta);
 int		pipe_root(t_token *exec, t_meta *meta);
 int		and_root(t_token *exec, t_meta *meta);
 int		or_root(t_token *exec, t_meta *meta);

@@ -236,10 +236,10 @@ void	debug_data(t_meta *meta)
 	grep_arg = malloc(sizeof(t_token));
 	// Echo command node
 	echo_cmd->type = T_TEXT;
-	echo_cmd->value = ft_strdup("env");
+	echo_cmd->value = ft_strdup("export");
 	echo_cmd->s_cmd = malloc(sizeof(char *) * 3); // ✅ ADD THIS
-	echo_cmd->s_cmd[0] = ft_strdup("env");        // ✅ ADD THIS
-	echo_cmd->s_cmd[1] = NULL;                    // ✅ ADD THIS
+	echo_cmd->s_cmd[0] = ft_strdup("export");        // ✅ ADD THIS
+	echo_cmd->s_cmd[1] = ft_strdup("var=35");                    // ✅ ADD THIS
 	echo_cmd->s_cmd[2] = NULL;                    // ✅ ADD THIS
 	echo_cmd->left = echo_arg;
 	echo_cmd->right = NULL;
@@ -247,14 +247,14 @@ void	debug_data(t_meta *meta)
 	echo_cmd->redirections = NULL; // ✅ ADD THIS
 	// Echo argument node ("hello world")
 	echo_arg->type = T_TEXT;
-	echo_arg->value = ft_strdup("var=23");
+	echo_arg->value = ft_strdup("var=35");
 	echo_arg->s_cmd = NULL; // ✅ ADD THIS (args don't need s_cmd)
 	echo_arg->left = NULL;
 	echo_arg->right = NULL;
 	echo_arg->back = echo_cmd;
 	echo_arg->redirections = NULL; // ✅ ADD THIS
 	// Pipe node (connects left and right commands)
-	pipe_node->type = T_PIPE;
+	pipe_node->type = T_AND;
 	pipe_node->value = NULL;
 	pipe_node->s_cmd = NULL; // ✅ ADD THIS (pipes don't have s_cmd)
 	pipe_node->left = echo_cmd;
@@ -263,9 +263,9 @@ void	debug_data(t_meta *meta)
 	pipe_node->redirections = NULL; // ✅ ADD THIS
 	// Grep command node
 	grep_cmd->type = T_TEXT;
-	grep_cmd->value = ft_strdup("env");
+	grep_cmd->value = ft_strdup("export");
 	grep_cmd->s_cmd = malloc(sizeof(char *) * 3); // ✅ ADD THIS
-	grep_cmd->s_cmd[0] = ft_strdup("env");        // ✅ ADD THIS
+	grep_cmd->s_cmd[0] = ft_strdup("export");        // ✅ ADD THIS
 	grep_cmd->s_cmd[1] = NULL;                    // ✅ ADD THIS
 	grep_cmd->s_cmd[2] = NULL;                    // ✅ ADD THIS
 	grep_cmd->left = NULL;
@@ -274,7 +274,7 @@ void	debug_data(t_meta *meta)
 	grep_cmd->redirections = NULL; // ✅ ADD THIS
 	// Grep argument node ("a")
 	grep_arg->type = T_TEXT;
-	grep_arg->value = ft_strdup("a");
+	grep_arg->value = ft_strdup("");
 	grep_arg->s_cmd = NULL; // ✅ ADD THIS
 	grep_arg->left = NULL;
 	grep_arg->right = NULL;
@@ -287,12 +287,32 @@ void	debug_data(t_meta *meta)
 	meta->head = pipe_node;
 }
 
+void	load_env(t_meta *meta, char **env)
+{
+	int	i;
+	int	len;
+
+	i = 0;
+	len = count_env(env);
+	meta->env = malloc((sizeof(char *) * len) + 1);
+	if (!meta->env)
+		return ;
+	while (env[i])
+	{
+		meta->env[i] = ft_strdup(env[i]);
+		i++;
+	}
+	meta->env[i] = NULL;
+}
+
 int	main(int argc, char **argv, char **env)
 {
 	t_meta	meta;
 
 	meta.last_exit_code = 0;
+    load_env(&meta, env);
 	debug_data(&meta);
+
 	// execute(&meta.head,env);
 	meta.last_exit_code = check_node(meta.head, &meta);
 	printf("\n EXIT CODE: %d \n", meta.last_exit_code);
