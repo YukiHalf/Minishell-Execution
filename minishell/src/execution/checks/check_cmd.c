@@ -2,7 +2,6 @@
 
 int	check_build_in(t_token *cmd, t_meta *meta)
 {
-	printf("[DEBUG] check_build_in: '%s' (pid=%d)\n", cmd->s_cmd[0], getpid());
 	if (ft_strcmp(cmd->s_cmd[0], "pwd") == 0)
 		return (printf("merge"), b_pwd());
 	else if (ft_strcmp(cmd->s_cmd[0], "cd") == 0)
@@ -15,7 +14,6 @@ int	check_build_in(t_token *cmd, t_meta *meta)
 		return (b_env(meta));
 	else if (ft_strcmp(cmd->s_cmd[0], "export") == 0)
 		return (b_export(cmd, meta));
-	printf("[FAILED]\n");
 	return (-1);
 }
 

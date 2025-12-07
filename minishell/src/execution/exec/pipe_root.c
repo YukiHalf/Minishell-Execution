@@ -3,6 +3,7 @@
 void	child_right(t_token *cmd, int *fd_main, t_meta *meta)
 {
 	int	fd;
+	int	exit_code;
 
 	close(fd_main[1]);
 	dup2(fd_main[0], STDIN_FILENO);
@@ -18,12 +19,14 @@ void	child_right(t_token *cmd, int *fd_main, t_meta *meta)
 		dup2(fd, STDOUT_FILENO);
 		close(fd);
 	}
-	exec_cmd(cmd, meta);
+	exit_code = check_node(cmd, meta);
+	exit(exit_code);
 }
 
 void	child_left(t_token *cmd, int *fd_main, t_meta *meta)
 {
 	int	fd;
+	int	exit_code;
 
 	close(fd_main[0]);
 	if (cmd->redirections && cmd->redirections->type == IN_FD)
@@ -39,7 +42,8 @@ void	child_left(t_token *cmd, int *fd_main, t_meta *meta)
 	}
 	dup2(fd_main[1], STDOUT_FILENO);
 	close(fd_main[1]);
-	exec_cmd(cmd, meta);
+	exit_code = check_node(cmd, meta);
+	exit(exit_code);
 }
 
 int	pipe_root(t_token *exec, t_meta *meta)

@@ -22,7 +22,7 @@ UTILS_DIR  := utils/
 # Source files by directory
 BUILTIN_FILES := echo.c pwd.c cd.c exit.c env.c export.c unset.c utils_export_1.c utils_export_2.c
 CHECKS_FILES  := check_cmd.c
-EXEC_FILES    := exec_cmd.c and_root.c or_root.c pipe_root.c execution_main.c
+EXEC_FILES    := exec_cmd.c and_root.c or_root.c pipe_root.c 
 UTILS_FILES := helper_functions.c
 # Combine all sources
 SRCS		:= $(MAIN_FILE) \
